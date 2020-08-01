@@ -1,0 +1,15 @@
+@startuml
+ZaloPayApp ---> Mobile BE
+
+if "Exceed 3 times?" then
+->[YES] "Manual reset pin flow"
+-right-> (*)
+else
+->[NO] "Check Risk"
+if "Low risk?" then
+->[YES] "Auto flow"
+else
+-->[NO] "Manual reset pin flow"
+->[Ending process] (*)
+endif
+@enduml
