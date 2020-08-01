@@ -6,12 +6,21 @@ MobileBE --> ZaloPayApp: Not reach limit
 ZaloPayApp -> MobileBE: Check Risk
 MobileBE --> ZaloPayApp: Low risk
 ' - Link VCB
-alt Mapping VCB account?
+alt Mapping VCB account
 
 ZaloPayApp --> ZaloPayApp: Unlink VCB
+note left
+**Unlink failed**
+//End process//
+end note
 
+note right
+**Unlink Success**
+//Continues with// 
+//gen OTP below//
+end note
 
-else Not mapp VCB account
+else NOT map VCB account
 ZaloPayApp -> MobileBE: Gen OTP
 ZaloPayApp -> MobileBE: Authen OTP (otp from sms)
 MobileBE --> ZaloPayApp: Authen success
