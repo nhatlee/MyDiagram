@@ -1,10 +1,11 @@
 @startuml
-ZaloPayApp -> MobileBE: Check exceed attempt limit //3 times//
-' - Auto Flow
+ZaloPayApp -> MobileBE: API get reset pin flow
 
-MobileBE --> ZaloPayApp: Not reach limit
-ZaloPayApp -> MobileBE: Check Risk
-MobileBE --> ZaloPayApp: Low risk
+MobileBE --> MobileBE: Check exceed 3 times and check Risk
+
+MobileBE --> ZaloPayApp: Response with error code
+
+ZaloPayApp --> ZaloPayApp: Check error code for Auto or manual flow
 ' - Link VCB
 alt Mapping VCB account
 
