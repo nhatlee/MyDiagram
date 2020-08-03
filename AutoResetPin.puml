@@ -1,7 +1,7 @@
 @startuml
-ZaloPayApp -> MobileBE: Check exceed attempt limit(3 times)
+ZaloPayApp -> MobileBE: Check exceed attempt limit //3 times//
 ' - Auto Flow
-alt Auto flow
+
 MobileBE --> ZaloPayApp: Not reach limit
 ZaloPayApp -> MobileBE: Check Risk
 MobileBE --> ZaloPayApp: Low risk
@@ -22,17 +22,43 @@ end note
 
 else NOT map VCB account
 ZaloPayApp -> MobileBE: Gen OTP
-ZaloPayApp -> MobileBE: Authen OTP (otp from sms)
-MobileBE --> ZaloPayApp: Authen success
+ZaloPayApp -> MobileBE: Authen OTP //(otp from sms)//
+alt Authen OTP Success
+ZaloPayApp -> MobileBE: Get list KBA
+
+ZaloPayApp -> MobileBE: API Auto verify questionnaire
+
+alt Verify questionnaire Success
 
 ZaloPayApp --> ZaloPayApp: Show create pin screen
 
 ZaloPayApp --> ZaloPayApp: Show confirm pin screen
 
-ZaloPayApp -> MobileBE: Call api reset pin(param: new pin)
+ZaloPayApp -> MobileBE: Call API auto reset pin //(param: new pin)//
+ZaloPayApp --> ZaloPayApp: Home page
+
+else Verify questionnaire failed
+ZaloPayApp --> ZaloPayApp: Check verify questionnaire exceed limit 3 times from error code
+note left
+**If exceed 3 times**
+//Goto reset pin manual//
+**Else**
+//Goto KBA screen//
+end note
 
 end
-else Manual flow
-MobileBE -> ZaloPayApp: Riched exceed limit 3 times
+
+else Authen OTP Failed
+ZaloPayApp --> ZaloPayApp: Check OTP exceed limit 3 times
+note left
+**If exceed 3 times**
+//End flow//
+**Else**
+//Goto OTP input screen//
+end note
+end
+
+' else Manual flow
+' MobileBE -> ZaloPayApp: Riched exceed limit //3 times//
 end
 @enduml
